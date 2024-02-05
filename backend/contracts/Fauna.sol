@@ -42,7 +42,7 @@ contract Fauna is Ownable {
 
  // *********************************** GETTERS ***********************************  
 
-  function getDonator(address _addr) external view returns (Donator memory donator) {
+  function getDonator(address _addr) external onlyDonators view returns (Donator memory donator) {
     donator = donators[_addr];
   }
 
@@ -86,7 +86,7 @@ contract Fauna is Ownable {
     }
   }
 
-  function getBalanceOfFauna() external view returns(uint) {
+  function getBalanceOfFunds() external view returns(uint) {
     return address(this).balance;
   }
 
@@ -96,8 +96,8 @@ contract Fauna is Ownable {
 
   function addCuratedProject(string calldata _name, address _projAddress) external onlyOwner {
     require(phase == Phase.ProjectsCuration, "Project curation is over");
-    require(keccak256(abi.encode(_name)) != keccak256(abi.encode("")), "No name");
-    require(keccak256(abi.encode(_projAddress)) != keccak256(abi.encode("")), "No address");
+    require(bytes(_name).length > 0, "No name");
+    require(_projAddress != address(0), "No address");
 
     projects.push(Project(_name, _projAddress, 0));
     emit ProjectCurated(projects.length -1);
@@ -114,7 +114,7 @@ contract Fauna is Ownable {
     emit NewPhase(phase);
   }
 
-  function SubmitVote(uint _id) external onlyDonators {
+  function submitVote(uint _id) external onlyDonators {
     require(phase == Phase.VotesStarted, "Cannot vote now");
     require(donators[msg.sender].hasVoted != true, "You already voted");
     require(_id < projects.length, "Unknown project"); 
@@ -129,6 +129,7 @@ contract Fauna is Ownable {
 
   function endVotes() external onlyOwner {
     require(phase == Phase.VotesStarted, "Cannot end votes now");
+    require(totalVotes > 0, "No votes submitted yet");
     phase = Phase.VotesEnded;
     emit NewPhase(phase);
   }
