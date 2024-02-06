@@ -12,6 +12,7 @@ contract Fauna is Ownable {
 
   struct Project {
     string name;
+    string desc;
     address projAddress;
     uint voteCount;
   }
@@ -94,12 +95,13 @@ contract Fauna is Ownable {
 // *********************************** PROJECTS ***********************************  
 
 
-  function addCuratedProject(string calldata _name, address _projAddress) external onlyOwner {
+  function addCuratedProject(string calldata _name, string calldata _desc, address _projAddress) external onlyOwner {
     require(phase == Phase.ProjectsCuration, "Project curation is over");
     require(bytes(_name).length > 0, "No name");
+    require(bytes(_desc).length > 0, "No description");
     require(_projAddress != address(0), "No address");
 
-    projects.push(Project(_name, _projAddress, 0));
+    projects.push(Project(_name, _desc, _projAddress, 0));
     emit ProjectCurated(projects.length -1);
   }
 

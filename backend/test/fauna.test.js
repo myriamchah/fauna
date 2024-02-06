@@ -46,18 +46,18 @@ describe("Fauna Tests", function () {
   describe("getProject", function () {
     it("should allow any address to see a project", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       const project = await fauna.getProject(0);
 
-      assert.equal(project.name, "name");
+      assert.equal(project.name, "name1");
     });
   });
 
   describe("getProjects", function () {
     it("should allow any address to see all projects", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1);
-      await fauna.addCuratedProject("name", addr2);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.addCuratedProject("name2", "desc2", addr2.address);
       const projects = await fauna.getProjects();
 
       assert.equal(projects.length, 2);
@@ -112,7 +112,7 @@ describe("Fauna Tests", function () {
 
     it("should revert if Fauna's balance is empty", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
       await fauna.connect(addr2).submitVote(0);
@@ -124,7 +124,7 @@ describe("Fauna Tests", function () {
 
     it("should emit an event", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
       await fauna.connect(addr2).submitVote(0);
@@ -155,7 +155,7 @@ describe("Fauna Tests", function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
 
       await expect(
-        fauna.connect(addr1).addCuratedProject("name", addr1.address)
+        fauna.connect(addr1).addCuratedProject("name1", "desc1", addr1.address)
       )
         .to.be.revertedWithCustomError(fauna, "OwnableUnauthorizedAccount")
         .withArgs(addr1.address);
@@ -163,11 +163,11 @@ describe("Fauna Tests", function () {
 
     it("should revert if not the right time to add a curated project", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.startVotes();
 
       await expect(
-        fauna.addCuratedProject("surname", addr1.address)
+        fauna.addCuratedProject("name2", "desc2", addr1.address)
       ).to.be.revertedWith("Project curation is over");
     });
 
@@ -175,8 +175,16 @@ describe("Fauna Tests", function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
 
       await expect(
-        fauna.addCuratedProject("", addr1.address)
+        fauna.addCuratedProject("", "desc1", addr1.address)
       ).to.be.revertedWith("No name");
+    });
+
+    it("should revert if no project description is given", async function () {
+      let { fauna, addr1 } = await loadFixture(deployFauna);
+
+      await expect(
+        fauna.addCuratedProject("name1", "", addr1.address)
+      ).to.be.revertedWith("No description");
     });
 
     it("should revert if no project address is given", async function () {
@@ -184,7 +192,8 @@ describe("Fauna Tests", function () {
 
       await expect(
         fauna.addCuratedProject(
-          "name",
+          "name1",
+          "desc1",
           "0x0000000000000000000000000000000000000000"
         )
       ).to.be.revertedWith("No address");
@@ -193,16 +202,16 @@ describe("Fauna Tests", function () {
     it("should be able to add a project", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
 
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       const project = await fauna.getProject(0);
 
-      assert.equal(project.name, "name");
+      assert.equal(project.name, "name1");
     });
 
     it("should emit an event", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
 
-      await expect(fauna.addCuratedProject("name", addr1.address))
+      await expect(fauna.addCuratedProject("name1", "desc1", addr1.address))
         .to.emit(fauna, "ProjectCurated")
         .withArgs(0);
     });
@@ -221,7 +230,7 @@ describe("Fauna Tests", function () {
 
     it("should revert if not the right time to start votes", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.startVotes();
 
       await expect(fauna.startVotes()).to.be.revertedWith(
@@ -239,7 +248,7 @@ describe("Fauna Tests", function () {
 
     it("should go to phase 1", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.startVotes();
 
       const phase = await fauna.phase();
@@ -249,7 +258,7 @@ describe("Fauna Tests", function () {
 
     it("should emit an event", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
 
       await expect(fauna.startVotes()).to.emit(fauna, "NewPhase").withArgs(1);
     });
@@ -258,7 +267,7 @@ describe("Fauna Tests", function () {
   describe("submitVote", function () {
     it("should prevent a non-donator from voting", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.startVotes();
 
       await expect(fauna.connect(addr2).submitVote(0)).to.be.revertedWith(
@@ -268,7 +277,7 @@ describe("Fauna Tests", function () {
 
     it("should revert if not the right time to vote", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
 
       await expect(fauna.connect(addr2).submitVote(0)).to.be.revertedWith(
@@ -278,7 +287,7 @@ describe("Fauna Tests", function () {
 
     it("should revert if voter has already voted", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
       await fauna.connect(addr2).submitVote(0);
@@ -290,7 +299,7 @@ describe("Fauna Tests", function () {
 
     it("should revert if project doesn't exist", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
 
@@ -301,8 +310,8 @@ describe("Fauna Tests", function () {
 
     it("should take into account the vote on the voter's side", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
-      await fauna.addCuratedProject("surname", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.addCuratedProject("name2", "desc2", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
       await fauna.connect(addr2).submitVote(1);
@@ -315,7 +324,7 @@ describe("Fauna Tests", function () {
 
     it("should take into account the vote on the project's side", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       const project = await fauna.getProject(0);
       const initialVoteCount = project.voteCount;
 
@@ -331,7 +340,7 @@ describe("Fauna Tests", function () {
 
     it("should increment totalVotes", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
       await fauna.connect(addr2).submitVote(0);
@@ -343,7 +352,7 @@ describe("Fauna Tests", function () {
 
     it("should emit an event", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
 
@@ -370,7 +379,7 @@ describe("Fauna Tests", function () {
 
     it("should revert if no votes have been submitted", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.startVotes();
 
       await expect(fauna.endVotes()).to.be.revertedWith(
@@ -380,7 +389,7 @@ describe("Fauna Tests", function () {
 
     it("should go to phase 2", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
       await fauna.connect(addr2).submitVote(0);
@@ -393,7 +402,7 @@ describe("Fauna Tests", function () {
 
     it("should emit an event", async function () {
       let { fauna, addr1 } = await loadFixture(deployFauna);
-      await fauna.addCuratedProject("name", addr1.address);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
       await fauna.startVotes();
       await fauna.connect(addr2).submitVote(0);
