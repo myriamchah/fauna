@@ -4,6 +4,33 @@ import { extendTheme } from "@chakra-ui/react";
 import "./globals.css";
 import { Anton, Lexend } from "next/font/google";
 
+import "@rainbow-me/rainbowkit/styles.css";
+import {
+  getDefaultWallets,
+  RainbowKitProvider,
+  lightTheme,
+} from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { sepolia, hardhat } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
+
+const { chains, publicClient } = configureChains(
+  [sepolia, hardhat],
+  [publicProvider(), publicProvider()]
+);
+
+const { connectors } = getDefaultWallets({
+  appName: "Voting contract app",
+  projectId: "83210f7c087525233ee5ffd57282b181",
+  chains,
+});
+
+const wagmiConfig = createConfig({
+  autoConnect: false,
+  connectors,
+  publicClient,
+});
+
 const lexend = Lexend({ subsets: ["latin"], display: "swap" });
 export const anton = Anton({
   weight: "400",
@@ -33,7 +60,17 @@ export default function RootLayout({ children }) {
         <title>FAUNA - DAO for wildlife protection</title>
       </head>
       <body className={lexend.className}>
-        <ChakraProvider theme={theme}>{children} </ChakraProvider>
+        <WagmiConfig config={wagmiConfig}>
+          <RainbowKitProvider
+            chains={chains}
+            theme={lightTheme({
+              accentColor: "#24280a",
+              accentColorForeground: "#ffffff",
+            })}
+          >
+            <ChakraProvider theme={theme}>{children} </ChakraProvider>
+          </RainbowKitProvider>
+        </WagmiConfig>
       </body>
     </html>
   );

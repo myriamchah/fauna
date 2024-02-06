@@ -2,6 +2,7 @@
 
 import { anton } from "../layout";
 import { Flex, Text } from "@chakra-ui/react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Header = () => {
   return (
@@ -18,6 +19,7 @@ const Header = () => {
       <Text fontSize={40} className={anton.className}>
         FAUNA
       </Text>
+      <ConnectButton />
     </Flex>
   );
 };
