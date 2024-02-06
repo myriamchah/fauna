@@ -19,3 +19,7 @@ body {
 a {
   text-decoration: none;
 }
+
+.logo-big {
+  font-size: 148px;
+}
