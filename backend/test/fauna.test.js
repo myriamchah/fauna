@@ -24,22 +24,25 @@ describe("Fauna Tests", function () {
   describe("Only Donators", function () {
     it("should prevent a non-donator from interacting", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
+      await fauna.startVotes();
 
-      await expect(
-        fauna.connect(addr1).getDonator(addr2.address)
-      ).to.be.revertedWith("Not donator");
+      await expect(fauna.connect(addr1).submitVote(0)).to.be.revertedWith(
+        "Not donator"
+      );
     });
   });
 
   // GETTERS
 
   describe("getDonator", function () {
-    it("should revert if sender is not a donator", async function () {
+    it("should allow anyone to see a donator", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
+      await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
 
-      await expect(
-        fauna.connect(addr1).getDonator(addr2.address)
-      ).to.be.revertedWith("Not donator");
+      await expect(fauna.connect(addr1).getDonator(addr2.address)).to.not.be
+        .reverted;
     });
   });
 

@@ -43,7 +43,7 @@ contract Fauna is Ownable {
 
  // *********************************** GETTERS ***********************************  
 
-  function getDonator(address _addr) external onlyDonators view returns (Donator memory donator) {
+  function getDonator(address _addr) external view returns (Donator memory donator) {
     donator = donators[_addr];
   }
 
