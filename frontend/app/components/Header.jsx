@@ -4,9 +4,11 @@ import { anton } from "../layout";
 import { Flex, Text } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
+import { useUserContext } from "../contexts/userContext";
 
 const Header = () => {
   const { isConnected } = useAccount();
+  const { isOwner, isDonator } = useUserContext();
 
   return (
     <Flex
@@ -20,9 +22,13 @@ const Header = () => {
       zIndex={2}
     >
       {isConnected && (
-        <Text fontSize={40} className={anton.className}>
-          FAUNA
-        </Text>
+        <>
+          <Text fontSize={40} className={anton.className}>
+            FAUNA
+          </Text>
+          <Text>{isOwner && "Owner"}</Text>
+          <Text>{isDonator && "Donator"}</Text>
+        </>
       )}
       <ConnectButton />
     </Flex>

@@ -4,6 +4,8 @@ import { extendTheme } from "@chakra-ui/react";
 import "./globals.css";
 import { Anton, Lexend } from "next/font/google";
 
+import { UserContextProvider } from "./contexts/userContext";
+
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultWallets,
@@ -20,7 +22,7 @@ const { chains, publicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "Voting contract app",
+  appName: "FAUNA DAO",
   projectId: "83210f7c087525233ee5ffd57282b181",
   chains,
 });
@@ -68,7 +70,9 @@ export default function RootLayout({ children }) {
               accentColorForeground: "#ffffff",
             })}
           >
-            <ChakraProvider theme={theme}>{children} </ChakraProvider>
+            <ChakraProvider theme={theme}>
+              <UserContextProvider>{children}</UserContextProvider>
+            </ChakraProvider>
           </RainbowKitProvider>
         </WagmiConfig>
       </body>
