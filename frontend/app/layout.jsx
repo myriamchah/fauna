@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
           <RainbowKitProvider
             chains={chains}
             theme={lightTheme({
-              accentColor: "#24280a",
+              accentColor: "#22543D",
               accentColorForeground: "#ffffff",
             })}
           >
