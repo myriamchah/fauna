@@ -40,8 +40,10 @@ export const UserContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    checkOwner();
-    checkDonator();
+    if (isConnected) {
+      checkOwner();
+      checkDonator();
+    }
   }, [address, isConnected]);
 
   return (
