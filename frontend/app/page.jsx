@@ -12,7 +12,7 @@ import NotConnected from "./components/utils/NotConnected";
 
 export default function Home() {
   const { isConnected } = useAccount();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>

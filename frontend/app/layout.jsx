@@ -5,6 +5,7 @@ import "./globals.css";
 import { Anton, Lexend } from "next/font/google";
 
 import { UserContextProvider } from "./contexts/userContext";
+import { ContractContextProvider } from "./contexts/contractContext";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import {
@@ -71,7 +72,9 @@ export default function RootLayout({ children }) {
             })}
           >
             <ChakraProvider theme={theme}>
-              <UserContextProvider>{children}</UserContextProvider>
+              <UserContextProvider>
+                <ContractContextProvider> {children}</ContractContextProvider>
+              </UserContextProvider>
             </ChakraProvider>
           </RainbowKitProvider>
         </WagmiConfig>
