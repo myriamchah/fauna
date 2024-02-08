@@ -4,11 +4,19 @@ import { Button, Flex, Text, Heading } from "@chakra-ui/react";
 import { useContractContext } from "../../contexts/contractContext";
 
 const VoteForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { projects, submitVote, hasVoted, votedProjectId } =
     useContractContext();
 
   const onSubmit = (id) => {
-    submitVote(id);
+    setIsLoading(true);
+    try {
+      submitVote(id);
+    } catch (e) {
+      console.log(e.message);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -34,9 +42,9 @@ const VoteForm = () => {
                 <Flex alignItems="center" key={project.id}>
                   <Button
                     colorScheme="green"
-                    disabled={hasVoted}
-                    // isLoading
-                    // loadingText="Submitting"
+                    disabled={hasVoted || isLoading}
+                    isLoading={isLoading}
+                    loadingText="Submitting"
                     onClick={() => onSubmit(project.id)}
                     m="2"
                   >

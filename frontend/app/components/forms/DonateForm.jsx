@@ -14,11 +14,19 @@ import { useContractContext } from "../../contexts/contractContext";
 
 const DonateForm = () => {
   const [donation, setDonation] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const { donate, phase } = useContractContext();
 
   const onSubmit = () => {
-    donate(donation);
-    setDonation("");
+    setIsLoading(true);
+    try {
+      donate(donation);
+      setDonation("");
+    } catch (e) {
+      console.log(e.message);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -44,8 +52,8 @@ const DonateForm = () => {
             </InputGroup>
             <Button
               onClick={onSubmit}
-              // isLoading
-              // loadingText="Submitting"
+              isLoading={isLoading}
+              loadingText="Submitting"
               colorScheme="green"
               ml="2"
             >

@@ -19,6 +19,7 @@ import { useContractContext } from "../../contexts/contractContext";
 
 const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
   const { addCuratedProject } = useContractContext();
+  const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState({
     name: "",
     desc: "",
@@ -33,12 +34,18 @@ const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
   };
 
   const onSubmit = () => {
-    addCuratedProject(project);
-    setProject({
-      name: "",
-      desc: "",
-      address: "",
-    });
+    setIsLoading(true);
+    try {
+      addCuratedProject(project);
+      setProject({
+        name: "",
+        desc: "",
+        address: "",
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -81,7 +88,7 @@ const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
               }}
             />
             <FormHelperText>
-              Where the funds will be send if Project is elected.
+              Where the funds will be sent if Project is elected.
             </FormHelperText>
           </FormControl>
         </ModalBody>
@@ -92,8 +99,8 @@ const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
           </Button>
           <Button
             onClick={onSubmit}
-            // isLoading
-            // loadingText="Submitting"
+            isLoading={isLoading}
+            loadingText="Submitting"
             colorScheme="green"
           >
             Submit
