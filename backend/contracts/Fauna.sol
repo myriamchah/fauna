@@ -20,7 +20,8 @@ contract Fauna is Ownable {
   enum  Phase {
     ProjectsCuration,
     VotesStarted,
-    VotesEnded
+    VotesEnded,
+    AllFundsSent
   }
 
   Phase public phase;
@@ -74,7 +75,7 @@ contract Fauna is Ownable {
   // }
 
   function sendFunds() external onlyOwner {
-    require(phase == Phase.VotesEnded, "Votes not ended");
+    require(phase >= Phase.VotesEnded, "Votes not ended");
     require(address(this).balance > 0, "Empty balance");
     uint balance = address(this).balance;
 
@@ -85,6 +86,8 @@ contract Fauna is Ownable {
       require(received, "Payment failed");
       emit FundsGranted(amount, i);
     }
+    phase = Phase.AllFundsSent;
+    emit NewPhase(phase);  
   }
 
   function getBalanceOfFunds() external view returns(uint) {

@@ -125,7 +125,7 @@ describe("Fauna Tests", function () {
       await expect(fauna.sendFunds()).to.be.revertedWith("Empty balance");
     });
 
-    it("should emit an event", async function () {
+    it("should emit an event for payment", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
       await fauna.addCuratedProject("name1", "desc1", addr1.address);
       await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
@@ -136,6 +136,17 @@ describe("Fauna Tests", function () {
       await expect(fauna.sendFunds())
         .to.emit(fauna, "FundsGranted")
         .withArgs(ethers.parseEther("1"), 0);
+    });
+
+    it("should emit an event for phase change", async function () {
+      let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
+      await fauna.startVotes();
+      await fauna.connect(addr2).submitVote(0);
+      await fauna.endVotes();
+
+      await expect(fauna.sendFunds()).to.emit(fauna, "NewPhase").withArgs(3);
     });
   });
 
