@@ -15,20 +15,21 @@ const VoteForm = () => {
     <>
       {/* {phase === 1 && isDonator && ( */}
       <>
-        <Heading mb="1rem">Vote</Heading>
+        <Heading my="1rem">Vote</Heading>
         <Text>
           We selected a few projects, based on rigorous criteria regarding their
           impact on wildlife, environment but also local populations. You may
           choose one project to which you would like us to send funds. Funds
-          will be shared between the projects getting votes.
+          will be shared between the projects getting at least 1 votes.
         </Text>
         {hasVoted ? (
           <Text>
-            Thank you, you already voted! (Your vote: {Number(votedProjectId)})
+            Thank you, you already voted! (For:{" "}
+            {projects.find((project) => project.id === votedProjectId).name})
           </Text>
         ) : (
           <Flex direction="column">
-            {projects.length &&
+            {projects.length > 0 &&
               projects.map((project) => (
                 <Flex alignItems="center" key={project.id}>
                   <Button

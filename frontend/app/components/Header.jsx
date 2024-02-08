@@ -43,37 +43,35 @@ const Header = () => {
         zIndex={2}
       >
         {isConnected && (
-          <>
-            <Text fontSize={40} className={anton.className}>
-              FAUNA
-            </Text>
-            <Text>{isOwner && "Owner"}</Text>
-            <Text>{isDonator && "Donator"}</Text>
-          </>
+          <Text fontSize={40} className={anton.className}>
+            FAUNA
+          </Text>
         )}
-        {isConnected && isOwner && (
-          <Menu>
-            <MenuButton fontWeight="600" mr="2rem ">
-              Owner actions
-              <TriangleDownIcon boxSize="0.5em" ml="0.25rem" />
-            </MenuButton>
-            <MenuList color="green.700">
-              <MenuItem icon={<AddIcon />} onClick={onOpen}>
-                Add a project
-              </MenuItem>
-              <MenuItem icon={<UnlockIcon />} onClick={startVotes}>
-                Open Votes
-              </MenuItem>
-              <MenuItem icon={<LockIcon />} onClick={endVotes}>
-                Close Votes
-              </MenuItem>
-              <MenuItem icon={<StarIcon />} onClick={sendFunds}>
-                Send Funds
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
-        <ConnectButton />
+        <Flex>
+          {isConnected && isOwner && (
+            <Menu>
+              <MenuButton fontWeight="600" mr="2rem ">
+                Owner actions
+                <TriangleDownIcon boxSize="0.5em" ml="0.25rem" />
+              </MenuButton>
+              <MenuList color="green.700">
+                <MenuItem icon={<AddIcon />} onClick={onOpen}>
+                  Add a project
+                </MenuItem>
+                <MenuItem icon={<UnlockIcon />} onClick={startVotes}>
+                  Open Votes
+                </MenuItem>
+                <MenuItem icon={<LockIcon />} onClick={endVotes}>
+                  Close Votes
+                </MenuItem>
+                <MenuItem icon={<StarIcon />} onClick={sendFunds}>
+                  Send Funds
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+          <ConnectButton />
+        </Flex>
       </Flex>
       <AddProjectModal {...{ isOpen, onOpen, onClose }} />
     </>

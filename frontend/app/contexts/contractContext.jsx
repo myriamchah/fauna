@@ -139,7 +139,7 @@ export const ContractContextProvider = ({ children }) => {
       const { request } = await prepareWriteContract({
         address: contractAddress,
         abi: abi,
-        functionName: "addCuratesubmitVotedProject",
+        functionName: "submitVote",
         args: [id],
         account: address,
       });

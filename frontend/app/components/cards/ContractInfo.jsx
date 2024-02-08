@@ -22,7 +22,7 @@ const ContractInfo = () => {
   return (
     <Card bg="rgba(246, 222, 117,0.3)">
       <CardBody color="white">
-        <Heading mb="1rem">Some updates on the current round</Heading>
+        <Heading mb="1rem">Current round</Heading>
         <Text mb="0.5rem">{humanReadablePhase(phase)}</Text>
         <Text mb="0.5rem">We have now {projects.length} curated projects.</Text>
         <Text>So far, we have raised {faunaBalance} ETH!</Text>

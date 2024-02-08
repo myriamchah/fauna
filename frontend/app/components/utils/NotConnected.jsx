@@ -19,7 +19,7 @@ const NotConnected = () => {
         to connect your wallet.
       </Text>
       <Text>
-        If you're an organization or an assocition helping animals and would
+        If you're an organization or an association helping animals and would
         like to apply for funding, please reach out to Myriam Chah.
       </Text>
     </Flex>

@@ -13,8 +13,10 @@ const ProjectInfo = () => {
         {projects.length
           ? projects.map((project) => (
               <>
-                <Text>{project.name}</Text>
-                <Text>{project.description}</Text>
+                <Text fontSize="24px" fontWeight="600">
+                  {project.name}
+                </Text>
+                <Text>{project.desc}</Text>
               </>
             ))
           : "No projects yet"}

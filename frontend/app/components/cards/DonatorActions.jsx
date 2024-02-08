@@ -6,7 +6,7 @@ import VoteForm from "../forms/VoteForm";
 
 const DonatorActions = () => {
   return (
-    <Card bg="rgba(246, 222, 117,0.3)" height="max-content">
+    <Card bg="rgba(246, 222, 117,0.3)" height="100%">
       <CardBody color="white">
         <DonateForm />
         <VoteForm />

@@ -10,16 +10,16 @@ import DonatorActions from "./cards/DonatorActions";
 const Main = () => {
   const { isOwner, isDonator } = useUserContext();
   return (
-    <Container mt="20vh" maxW="120ch" height="70vh">
+    <Container mt="20vh" maxW="84vw" height="70vh">
       <Heading size="3xl" mb="2rem">
         Hello, dear {isOwner && "Admin"} {isDonator && "Donator"}
       </Heading>
-      <Flex>
-        <Flex direction="column" gap="10">
+      <Flex gap="10">
+        <Flex direction="column" gap="10" flex="1.5">
           <ContractInfo />
           <ProjectsInfo />
         </Flex>
-        <Flex>
+        <Flex flex="2">
           <DonatorActions />
         </Flex>
       </Flex>
