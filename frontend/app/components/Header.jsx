@@ -26,8 +26,16 @@ import AddProjectModal from "./forms/AddProjectFormModal";
 
 const Header = () => {
   const { isConnected } = useAccount();
-  const { isOwner, isDonator } = useUserContext();
-  const { startVotes, endVotes, sendFunds } = useContractContext();
+  const { isOwner } = useUserContext();
+  const {
+    phase,
+    projects,
+    faunaBalance,
+    totalVotes,
+    startVotes,
+    endVotes,
+    sendFunds,
+  } = useContractContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -55,16 +63,32 @@ const Header = () => {
                 <TriangleDownIcon boxSize="0.5em" ml="0.25rem" />
               </MenuButton>
               <MenuList color="green.700">
-                <MenuItem icon={<AddIcon />} onClick={onOpen}>
+                <MenuItem
+                  icon={<AddIcon />}
+                  onClick={onOpen}
+                  isDisabled={phase != 0}
+                >
                   Add a project
                 </MenuItem>
-                <MenuItem icon={<UnlockIcon />} onClick={startVotes}>
+                <MenuItem
+                  icon={<UnlockIcon />}
+                  onClick={startVotes}
+                  isDisabled={phase != 0 || projects.length === 0}
+                >
                   Open Votes
                 </MenuItem>
-                <MenuItem icon={<LockIcon />} onClick={endVotes}>
+                <MenuItem
+                  icon={<LockIcon />}
+                  onClick={endVotes}
+                  isDisabled={totalVotes === 0 || phase != 1}
+                >
                   Close Votes
                 </MenuItem>
-                <MenuItem icon={<StarIcon />} onClick={sendFunds}>
+                <MenuItem
+                  icon={<StarIcon />}
+                  onClick={sendFunds}
+                  isDisabled={faunaBalance > 0 || phase != 2}
+                >
                   Send Funds
                 </MenuItem>
               </MenuList>

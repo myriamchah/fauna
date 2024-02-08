@@ -15,6 +15,7 @@ const ContractContext = createContext();
 export const ContractContextProvider = ({ children }) => {
   const [phase, setPhase] = useState(0);
   const [projects, setProjects] = useState([]);
+  const [totalVotes, setTotalVotes] = useState(0);
   const [faunaBalance, setFaunaBalance] = useState(0);
   const [hasVoted, setHasVoted] = useState(false);
   const [votedProjectId, setVotedProjectId] = useState("");
@@ -42,6 +43,19 @@ export const ContractContextProvider = ({ children }) => {
         functionName: "getProjects",
       });
       setProjects(projects);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const getTotalVotes = async () => {
+    try {
+      const votes = await readContract({
+        address: contractAddress,
+        abi: abi,
+        functionName: "totalVotes",
+      });
+      setTotalVotes(votes);
     } catch (e) {
       console.log(e.message);
     }
@@ -148,6 +162,7 @@ export const ContractContextProvider = ({ children }) => {
       toast.showSuccess("Thank you! Your vote has been received.");
       setHasVoted(true);
       setVotedProjectId(id);
+      await getTotalVotes();
     } catch (e) {
       toast.showError(e.message);
     }
@@ -183,6 +198,7 @@ export const ContractContextProvider = ({ children }) => {
       value={{
         phase,
         projects,
+        totalVotes,
         faunaBalance,
         hasVoted,
         votedProjectId,
