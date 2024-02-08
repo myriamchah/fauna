@@ -1,13 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { Button, Flex, Text, Heading } from "@chakra-ui/react";
 import { useContractContext } from "../../contexts/contractContext";
+import { useUserContext } from "@/app/contexts/userContext";
 
 const VoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-
-  const { projects, submitVote, hasVoted, votedProjectId } =
-    useContractContext();
+  const { hasVoted, votedProjectId } = useUserContext();
+  const { projects, submitVote } = useContractContext();
 
   const onSubmit = (id) => {
     setIsLoading(true);

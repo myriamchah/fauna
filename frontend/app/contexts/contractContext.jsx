@@ -9,6 +9,7 @@ import {
   waitForTransaction,
 } from "@wagmi/core";
 import { parseEther, formatEther } from "viem";
+import { useUserContext } from "./userContext";
 
 const ContractContext = createContext();
 
@@ -17,8 +18,7 @@ export const ContractContextProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [totalVotes, setTotalVotes] = useState(0);
   const [faunaBalance, setFaunaBalance] = useState(0);
-  const [hasVoted, setHasVoted] = useState(false);
-  const [votedProjectId, setVotedProjectId] = useState("");
+  const { setHasVoted, setVotedProjectId } = useUserContext();
   const { address } = useAccount();
   const toast = useToast();
 
@@ -200,8 +200,6 @@ export const ContractContextProvider = ({ children }) => {
         projects,
         totalVotes,
         faunaBalance,
-        hasVoted,
-        votedProjectId,
         addCuratedProject,
         donate,
         sendFunds,

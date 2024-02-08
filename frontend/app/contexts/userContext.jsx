@@ -7,6 +7,8 @@ const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
   const [isOwner, setIsOwner] = useState(false);
   const [isDonator, setIsDonator] = useState(false);
+  const [hasVoted, setHasVoted] = useState(false);
+  const [votedProjectId, setVotedProjectId] = useState("");
   const { address, isConnected } = useAccount();
 
   const checkOwner = async () => {
@@ -16,7 +18,6 @@ export const UserContextProvider = ({ children }) => {
         abi: abi,
         functionName: "owner",
       });
-      console.log(owner);
       setIsOwner(owner === address);
     } catch (e) {
       console.log(e.message);
@@ -31,9 +32,9 @@ export const UserContextProvider = ({ children }) => {
         functionName: "getDonator",
         args: [address],
       });
-
-      console.log(donator);
       setIsDonator(Number(donator.totalDonated) > 0);
+      setHasVoted(donator.hasVoted);
+      setVotedProjectId(donator.votedProjectId);
     } catch (e) {
       console.log(e.message);
     }
@@ -51,6 +52,10 @@ export const UserContextProvider = ({ children }) => {
       value={{
         isOwner,
         isDonator,
+        hasVoted,
+        votedProjectId,
+        setHasVoted,
+        setVotedProjectId,
       }}
     >
       {children}
