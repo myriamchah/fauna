@@ -1,19 +1,28 @@
 "use client";
 
-import { Container, Text } from "@chakra-ui/react";
-import { useContractContext } from "../contexts/contractContext";
+import { Container, Flex, Heading } from "@chakra-ui/react";
+import { useUserContext } from "@/app/contexts/userContext";
+
+import ContractInfo from "./cards/ContractInfo";
+import ProjectsInfo from "./cards/ProjectsInfo";
+import DonatorActions from "./cards/DonatorActions";
 
 const Main = () => {
-  const { phase, projects, faunaBalance } = useContractContext();
-
+  const { isOwner, isDonator } = useUserContext();
   return (
-    <Container mt="80px" maxW="120ch">
-      <Text>Current phase is: {phase}</Text>
-      <Text>
-        Curated projects:{" "}
-        {projects.length && projects.map((project) => project.name)}
-      </Text>
-      <Text>Fauna Balance: {faunaBalance}</Text>
+    <Container mt="20vh" maxW="120ch" height="70vh">
+      <Heading size="3xl" mb="2rem">
+        Hello, dear {isOwner && "Admin"} {isDonator && "Donator"}
+      </Heading>
+      <Flex>
+        <Flex direction="column" gap="10">
+          <ContractInfo />
+          <ProjectsInfo />
+        </Flex>
+        <Flex>
+          <DonatorActions />
+        </Flex>
+      </Flex>
     </Container>
   );
 };

@@ -16,6 +16,8 @@ export const ContractContextProvider = ({ children }) => {
   const [phase, setPhase] = useState(0);
   const [projects, setProjects] = useState([]);
   const [faunaBalance, setFaunaBalance] = useState(0);
+  const [hasVoted, setHasVoted] = useState(false);
+  const [votedProjectId, setVotedProjectId] = useState("");
   const { address } = useAccount();
   const toast = useToast();
 
@@ -144,6 +146,8 @@ export const ContractContextProvider = ({ children }) => {
       const { hash } = await writeContract(request);
       await waitForTransaction({ hash });
       toast.showSuccess("Thank you! Your vote has been received.");
+      setHasVoted(true);
+      setVotedProjectId(id);
     } catch (e) {
       toast.showError(e.message);
     }
@@ -180,6 +184,8 @@ export const ContractContextProvider = ({ children }) => {
         phase,
         projects,
         faunaBalance,
+        hasVoted,
+        votedProjectId,
         addCuratedProject,
         donate,
         sendFunds,
