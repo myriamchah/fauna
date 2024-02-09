@@ -45,7 +45,7 @@ export const UserContextProvider = ({ children }) => {
       checkOwner();
       checkDonator();
     }
-  }, [address, isConnected]);
+  }, [address, isConnected, hasVoted]);
 
   return (
     <UserContext.Provider
