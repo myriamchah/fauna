@@ -42,13 +42,14 @@ const Header = () => {
     <>
       <Flex
         px="2rem"
-        py="1rem"
+        py={isConnected ? "0" : "0.75rem"}
         justifyContent={isConnected ? "space-between" : "flex-end"}
         alignItems="center"
         width="100%"
         pos="fixed"
         top="0"
         zIndex={2}
+        bgColor={isConnected ? "#172B20" : "transparent"}
       >
         {isConnected && (
           <Text fontSize={40} className={anton.className}>

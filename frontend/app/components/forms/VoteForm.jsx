@@ -33,20 +33,19 @@ const VoteForm = () => {
         </Text>
         {hasVoted ? (
           <Text>
-            Thank you, you already voted! (For:{" "}
-            {projects.find((project) => project.id === votedProjectId).name})
+            Thank you, you already voted! (For: {projects[votedProjectId].name})
           </Text>
         ) : (
-          <Flex direction="column">
+          <Flex>
             {projects.length > 0 &&
-              projects.map((project) => (
-                <Flex alignItems="center" key={project.id}>
+              projects.map((project, i) => (
+                <Flex alignItems="center" key={i}>
                   <Button
                     colorScheme="green"
                     disabled={hasVoted || isLoading}
                     isLoading={isLoading}
                     loadingText="Submitting"
-                    onClick={() => onSubmit(project.id)}
+                    onClick={() => onSubmit(i)}
                     m="2"
                   >
                     {project.name}

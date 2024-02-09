@@ -165,6 +165,8 @@ export const ContractContextProvider = ({ children }) => {
       await getTotalVotes();
     } catch (e) {
       toast.showError(e.message);
+      setHasVoted(false);
+      setVotedProjectId("");
     }
   };
 

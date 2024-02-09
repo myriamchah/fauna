@@ -10,7 +10,7 @@ import DonatorActions from "./cards/DonatorActions";
 const Main = () => {
   const { isOwner, isDonator } = useUserContext();
   return (
-    <Container mt="20vh" maxW="84vw" height="70vh">
+    <Container mt="124px" maxW="84vw" height="calc(100vh - 180px)">
       <Heading size="3xl" mb="2rem">
         Hello, dear {isOwner && "Admin"} {isDonator && "Donator"}
       </Heading>

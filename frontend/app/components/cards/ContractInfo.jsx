@@ -20,7 +20,7 @@ const ContractInfo = () => {
   const { phase, projects, faunaBalance } = useContractContext();
 
   return (
-    <Card bg="rgba(246, 222, 117,0.3)">
+    <Card bg="rgba(246, 222, 117,0.3)" height="fit-content">
       <CardBody color="white">
         <Heading mb="1rem">Current round</Heading>
         <Text mb="0.5rem">{humanReadablePhase(phase)}</Text>

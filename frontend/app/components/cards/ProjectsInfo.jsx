@@ -7,7 +7,7 @@ const ProjectInfo = () => {
   const { projects } = useContractContext();
 
   return (
-    <Card bg="rgba(246, 222, 117,0.3)">
+    <Card bg="rgba(246, 222, 117,0.3)" height="280px" overflowY="auto">
       <CardBody color="white">
         <Heading mb="1rem">Curated Projects</Heading>
         {projects.length
