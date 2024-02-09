@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Flex, Text, Heading } from "@chakra-ui/react";
+import { Button, Flex, Text, Heading, Center } from "@chakra-ui/react";
 import { useContractContext } from "../../contexts/contractContext";
 import { useUserContext } from "@/app/contexts/userContext";
 
@@ -22,40 +22,41 @@ const VoteForm = () => {
 
   return (
     <>
-      {/* {phase === 1 && isDonator && ( */}
-      <>
-        <Heading my="1rem">Vote</Heading>
-        <Text>
-          We selected a few projects, based on rigorous criteria regarding their
-          impact on wildlife, environment but also local populations. You may
-          choose one project to which you would like us to send funds. Funds
-          will be shared between the projects getting at least 1 votes.
-        </Text>
-        {hasVoted ? (
+      {phase === 1 && isDonator && (
+        <>
+          <Heading my="1rem">Vote</Heading>
           <Text>
-            Thank you, you already voted! (For: {projects[votedProjectId].name})
+            We selected a few projects, based on rigorous criteria regarding
+            their impact on wildlife, environment but also local populations.
+            You may choose one project to which you would like us to send funds.
+            Funds will be shared between the projects getting at least 1 votes.
           </Text>
-        ) : (
-          <Flex>
-            {projects.length > 0 &&
-              projects.map((project, i) => (
-                <Flex alignItems="center" key={i}>
-                  <Button
-                    colorScheme="green"
-                    disabled={hasVoted || isLoading}
-                    isLoading={isLoading}
-                    loadingText="Submitting"
-                    onClick={() => onSubmit(i)}
-                    m="2"
-                  >
-                    {project.name}
-                  </Button>
-                </Flex>
-              ))}
-          </Flex>
-        )}
-      </>
-      {/* )} */}
+          {hasVoted ? (
+            <Center mt="2rem">
+              Thank you, you already voted! (For:
+              {votedProjectId && projects[votedProjectId].name})
+            </Center>
+          ) : (
+            <Flex>
+              {projects.length > 0 &&
+                projects.map((project, i) => (
+                  <Flex alignItems="center" key={i}>
+                    <Button
+                      colorScheme="green"
+                      disabled={hasVoted || isLoading}
+                      isLoading={isLoading}
+                      loadingText="Submitting"
+                      onClick={() => onSubmit(i)}
+                      m="2"
+                    >
+                      {project.name}
+                    </Button>
+                  </Flex>
+                ))}
+            </Flex>
+          )}
+        </>
+      )}
     </>
   );
 };

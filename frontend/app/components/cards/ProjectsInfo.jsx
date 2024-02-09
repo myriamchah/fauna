@@ -9,7 +9,7 @@ const ProjectInfo = () => {
   return (
     <Card bg="rgba(246, 222, 117,0.3)" height="280px" overflowY="auto">
       <CardBody color="white">
-        <Heading mb="1rem">Curated Projects</Heading>
+        <Heading mb="1rem">Projects</Heading>
         {projects.length
           ? projects.map((project) => (
               <>

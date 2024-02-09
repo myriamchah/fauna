@@ -88,7 +88,7 @@ const Header = () => {
                 <MenuItem
                   icon={<StarIcon />}
                   onClick={sendFunds}
-                  isDisabled={faunaBalance > 0 || phase != 2}
+                  isDisabled={faunaBalance === 0 || phase != 2}
                 >
                   Send Funds
                 </MenuItem>
@@ -96,6 +96,7 @@ const Header = () => {
             </Menu>
           )}
           <ConnectButton />
+          {console.log("totalVOtes" + totalVotes)}
         </Flex>
       </Flex>
       <AddProjectModal {...{ isOpen, onOpen, onClose }} />

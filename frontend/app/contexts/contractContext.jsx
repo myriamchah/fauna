@@ -141,7 +141,7 @@ export const ContractContextProvider = ({ children }) => {
       await waitForTransaction({ hash });
       await checkPhase();
       toast.showSuccess(
-        "You started voting session, and won't be able to add new projects since now."
+        "You started voting session, and won't be able to add new projects from now on."
       );
     } catch (e) {
       toast.showError(e.message);
@@ -193,6 +193,7 @@ export const ContractContextProvider = ({ children }) => {
     checkPhase();
     getProjects();
     getFaunaBalance();
+    getTotalVotes();
   }, [address]);
 
   return (
