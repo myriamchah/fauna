@@ -96,7 +96,6 @@ const Header = () => {
             </Menu>
           )}
           <ConnectButton />
-          {console.log("totalVOtes" + totalVotes)}
         </Flex>
       </Flex>
       <AddProjectModal {...{ isOpen, onOpen, onClose }} />

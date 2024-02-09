@@ -8,7 +8,7 @@ import { useUserContext } from "@/app/contexts/userContext";
 const VoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { hasVoted, votedProjectId } = useUserContext();
-  const { projects, submitVote } = useContractContext();
+  const { phase, projects, submitVote } = useContractContext();
 
   const onSubmit = (id) => {
     setIsLoading(true);
