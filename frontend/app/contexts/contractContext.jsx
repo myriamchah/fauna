@@ -7,8 +7,9 @@ import {
   prepareWriteContract,
   writeContract,
   waitForTransaction,
+  getPublicClient,
 } from "@wagmi/core";
-import { parseEther, formatEther } from "viem";
+import { parseEther, formatEther, parseAbiItem } from "viem";
 import { useUserContext } from "./userContext";
 
 const ContractContext = createContext();
@@ -18,9 +19,13 @@ export const ContractContextProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [totalVotes, setTotalVotes] = useState(0);
   const [faunaBalance, setFaunaBalance] = useState(0);
+  const [donationEvents, setDonationEvents] = useState([]);
+  const [fundsGrantedEvents, setFundsGrantedEvents] = useState([]);
+
   const { setHasVoted, setVotedProjectId } = useUserContext();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const toast = useToast();
+  const client = getPublicClient();
 
   const checkPhase = async () => {
     try {
@@ -104,6 +109,7 @@ export const ContractContextProvider = ({ children }) => {
       const { hash } = await writeContract(request);
       await waitForTransaction({ hash });
       await getFaunaBalance();
+      await getDonationEvents();
       toast.showSuccess(
         "Thank you for your donation! We're looking forward to your vote to help a project fighting for wildlife protection :)"
       );
@@ -122,7 +128,7 @@ export const ContractContextProvider = ({ children }) => {
       });
       const { hash } = await writeContract(request);
       await waitForTransaction({ hash });
-      await getFaunaBalance();
+      await getFundsGrantedEvents();
       toast.showSuccess("All funds have been sent to grantees!");
     } catch (e) {
       toast.showError(e.message);
@@ -189,11 +195,49 @@ export const ContractContextProvider = ({ children }) => {
     }
   };
 
+  const getDonationEvents = async () => {
+    const donationLogs = await client.getLogs({
+      event: parseAbiItem(
+        "event DonationReceived(address account, uint amount)"
+      ),
+      fromBlock: 0n,
+      toBlock: "latest",
+    });
+    setDonationEvents(
+      donationLogs.map((log) => ({
+        address: log.args.account,
+        amount: log.args.amount,
+      }))
+    );
+  };
+
+  const getFundsGrantedEvents = async () => {
+    const fundsGrantedLogs = await client.getLogs({
+      event: parseAbiItem("event FundsGranted(uint amount, uint projectId)"),
+      fromBlock: 0n,
+      toBlock: "latest",
+    });
+    setFundsGrantedEvents(
+      fundsGrantedLogs.map((log) => ({
+        amount: log.args.amount,
+        projectId: log.args.projectId,
+      }))
+    );
+  };
+
+  const getAllEvents = async () => {
+    await getDonationEvents();
+    await getFundsGrantedEvents();
+  };
+
   useEffect(() => {
-    checkPhase();
-    getProjects();
-    getFaunaBalance();
-    getTotalVotes();
+    if (isConnected) {
+      checkPhase();
+      getProjects();
+      getFaunaBalance();
+      getTotalVotes();
+      getAllEvents();
+    }
   }, [address]);
 
   return (
@@ -203,6 +247,8 @@ export const ContractContextProvider = ({ children }) => {
         projects,
         totalVotes,
         faunaBalance,
+        donationEvents,
+        fundsGrantedEvents,
         addCuratedProject,
         donate,
         sendFunds,

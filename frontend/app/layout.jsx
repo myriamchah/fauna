@@ -19,7 +19,7 @@ import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient } = configureChains(
   [sepolia, hardhat],
-  [publicProvider(), publicProvider()]
+  [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({

@@ -9,14 +9,17 @@ import {
   Heading,
   Text,
   Center,
+  Flex,
 } from "@chakra-ui/react";
+import { formatEther } from "viem";
+
 import { useContractContext } from "../../contexts/contractContext";
 
 const DonateForm = () => {
   const [donation, setDonation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { donate, phase } = useContractContext();
+  const { donate, phase, donationEvents } = useContractContext();
 
   const onSubmit = () => {
     setIsLoading(true);
@@ -60,6 +63,20 @@ const DonateForm = () => {
               Donate!
             </Button>
           </Center>
+          <Flex
+            direction="column"
+            alignItems="center"
+            height="60px"
+            overflowY="auto"
+            mt="0.5rem"
+          >
+            {donationEvents.length > 0 &&
+              donationEvents.reverse().map((event, i) => (
+                <Text fontSize="12" key={i}>
+                  {formatEther(event.amount)} ETH received from {event.address}
+                </Text>
+              ))}
+          </Flex>
         </>
       )}
     </>

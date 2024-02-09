@@ -33,8 +33,8 @@ const VoteForm = () => {
           </Text>
           {hasVoted ? (
             <Center mt="2rem">
-              Thank you, you already voted! (For:
-              {votedProjectId && projects[votedProjectId].name})
+              Thank you, you already voted! (For: &nbsp;
+              {votedProjectId >= 0 && projects[votedProjectId].name})
             </Center>
           ) : (
             <Flex>
