@@ -14,8 +14,9 @@ import {
   AddIcon,
   UnlockIcon,
   LockIcon,
-  StarIcon,
+  AtSignIcon,
   TriangleDownIcon,
+  CheckCircleIcon,
 } from "@chakra-ui/icons";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
@@ -23,6 +24,7 @@ import { useUserContext } from "../contexts/userContext";
 import { useContractContext } from "../contexts/contractContext";
 
 import AddProjectModal from "./forms/AddProjectFormModal";
+import CertifyModal from "./forms/CertifyFormModal";
 
 const Header = () => {
   const { isConnected } = useAccount();
@@ -36,7 +38,16 @@ const Header = () => {
     endVotes,
     sendFunds,
   } = useContractContext();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAddProjectModalOpen,
+    onOpen: onAddProjectModalOpen,
+    onClose: onAddProjectModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isCertifyModalOpen,
+    onOpen: onCertifyModalOpen,
+    onClose: onCertifyModalClose,
+  } = useDisclosure();
 
   return (
     <>
@@ -66,7 +77,7 @@ const Header = () => {
               <MenuList color="green.700">
                 <MenuItem
                   icon={<AddIcon />}
-                  onClick={onOpen}
+                  onClick={onAddProjectModalOpen}
                   isDisabled={phase != 0}
                 >
                   Add a project
@@ -86,11 +97,18 @@ const Header = () => {
                   Close Votes
                 </MenuItem>
                 <MenuItem
-                  icon={<StarIcon />}
+                  icon={<AtSignIcon />}
                   onClick={sendFunds}
                   isDisabled={faunaBalance === 0 || phase != 2}
                 >
                   Send Funds
+                </MenuItem>
+                <MenuItem
+                  icon={<CheckCircleIcon />}
+                  onClick={onCertifyModalOpen}
+                  isDisabled={phase != 3}
+                >
+                  Certify funds usage
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -98,7 +116,13 @@ const Header = () => {
           <ConnectButton />
         </Flex>
       </Flex>
-      <AddProjectModal {...{ isOpen, onOpen, onClose }} />
+      <AddProjectModal
+        {...{
+          isAddProjectModalOpen,
+          onAddProjectModalClose,
+        }}
+      />
+      <CertifyModal {...{ isCertifyModalOpen, onCertifyModalClose }} />
     </>
   );
 };

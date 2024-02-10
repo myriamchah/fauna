@@ -21,11 +21,13 @@ export const ContractContextProvider = ({ children }) => {
   const [faunaBalance, setFaunaBalance] = useState(0);
   const [donationEvents, setDonationEvents] = useState([]);
   const [fundsGrantedEvents, setFundsGrantedEvents] = useState([]);
-
+  const [certifEvents, setCertifEvents] = useState([]);
   const { setHasVoted, setVotedProjectId } = useUserContext();
   const { address, isConnected } = useAccount();
   const toast = useToast();
   const client = getPublicClient();
+
+  // *********************************** GETTERS ***********************************
 
   const checkPhase = async () => {
     try {
@@ -79,6 +81,8 @@ export const ContractContextProvider = ({ children }) => {
     }
   };
 
+  //  *********************************** PROJECTS ************************************
+
   const addCuratedProject = async (project) => {
     try {
       const { request } = await prepareWriteContract({
@@ -96,6 +100,8 @@ export const ContractContextProvider = ({ children }) => {
       toast.showError(e.message);
     }
   };
+
+  //  *********************************** FUNDS ************************************
 
   const donate = async (amount) => {
     try {
@@ -130,10 +136,33 @@ export const ContractContextProvider = ({ children }) => {
       await waitForTransaction({ hash });
       await getFundsGrantedEvents();
       toast.showSuccess("All funds have been sent to grantees!");
+      await checkPhase();
     } catch (e) {
       toast.showError(e.message);
     }
   };
+
+  const certifyFundsUsage = async (id, comment) => {
+    try {
+      const { request } = await prepareWriteContract({
+        address: contractAddress,
+        abi: abi,
+        functionName: "certifyFundsUsage",
+        args: [id, comment],
+        account: address,
+      });
+      const { hash } = await writeContract(request);
+      await waitForTransaction({ hash });
+      await getCertifEvents();
+      toast.showSuccess(
+        "Certification has been taken into account, thank you!"
+      );
+    } catch (e) {
+      toast.showError(e.message);
+    }
+  };
+
+  //  *********************************** VOTES ************************************
 
   const startVotes = async () => {
     try {
@@ -195,6 +224,8 @@ export const ContractContextProvider = ({ children }) => {
     }
   };
 
+  //  *********************************** EVENTS ************************************
+
   const getDonationEvents = async () => {
     const donationLogs = await client.getLogs({
       event: parseAbiItem(
@@ -225,9 +256,26 @@ export const ContractContextProvider = ({ children }) => {
     );
   };
 
+  const getCertifEvents = async () => {
+    const certifLogs = await client.getLogs({
+      event: parseAbiItem(
+        "event ProperFundsUsageCertified(uint id, string comment)"
+      ),
+      fromBlock: 0n,
+      toBlock: "latest",
+    });
+    setCertifEvents(
+      certifLogs.map((log) => ({
+        id: log.args.id,
+        comment: log.args.comment,
+      }))
+    );
+  };
+
   const getAllEvents = async () => {
     await getDonationEvents();
     await getFundsGrantedEvents();
+    await getCertifEvents();
   };
 
   useEffect(() => {
@@ -249,12 +297,14 @@ export const ContractContextProvider = ({ children }) => {
         faunaBalance,
         donationEvents,
         fundsGrantedEvents,
+        certifEvents,
         addCuratedProject,
         donate,
         sendFunds,
         startVotes,
         submitVote,
         endVotes,
+        certifyFundsUsage,
       }}
     >
       {children}

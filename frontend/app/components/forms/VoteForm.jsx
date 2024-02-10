@@ -10,10 +10,10 @@ const VoteForm = () => {
   const { isDonator, hasVoted, votedProjectId } = useUserContext();
   const { phase, projects, submitVote } = useContractContext();
 
-  const onSubmit = (id) => {
+  const onSubmit = async (id) => {
     setIsLoading(true);
     try {
-      submitVote(id);
+      await submitVote(id);
     } catch (e) {
       console.log(e.message);
     }

@@ -11,13 +11,13 @@ const ProjectInfo = () => {
       <CardBody color="white">
         <Heading mb="1rem">Projects</Heading>
         {projects.length
-          ? projects.map((project) => (
-              <>
+          ? projects.map((project, i) => (
+              <div key={i}>
                 <Text fontSize="24px" fontWeight="600">
                   {project.name}
                 </Text>
                 <Text>{project.desc}</Text>
-              </>
+              </div>
             ))
           : "No projects yet"}
       </CardBody>

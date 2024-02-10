@@ -5,6 +5,7 @@ import DonateForm from "../forms/DonateForm";
 import VoteForm from "../forms/VoteForm";
 import VotesEnded from "../forms/VotesEnded";
 import FundsGranted from "../forms/FundsGranted";
+import FundsUsageCertified from "../forms/FundsUsageCertified";
 
 const DonatorActions = () => {
   return (
@@ -19,6 +20,7 @@ const DonatorActions = () => {
         <VoteForm />
         <VotesEnded />
         <FundsGranted />
+        <FundsUsageCertified />
       </CardBody>
     </Card>
   );

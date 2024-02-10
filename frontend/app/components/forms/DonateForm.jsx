@@ -21,10 +21,10 @@ const DonateForm = () => {
 
   const { donate, phase, donationEvents } = useContractContext();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsLoading(true);
     try {
-      donate(donation);
+      await donate(donation);
       setDonation("");
     } catch (e) {
       console.log(e.message);

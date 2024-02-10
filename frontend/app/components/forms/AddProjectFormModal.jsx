@@ -17,7 +17,10 @@ import {
 } from "@chakra-ui/react";
 import { useContractContext } from "../../contexts/contractContext";
 
-const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
+const addProjectFormModal = ({
+  isAddProjectModalOpen,
+  onAddProjectModalClose,
+}) => {
   const { addCuratedProject } = useContractContext();
   const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState({
@@ -33,10 +36,10 @@ const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
     }));
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsLoading(true);
     try {
-      addCuratedProject(project);
+      await addCuratedProject(project);
       setProject({
         name: "",
         desc: "",
@@ -49,7 +52,7 @@ const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isAddProjectModalOpen} onClose={onAddProjectModalClose}>
       <ModalOverlay />
       <ModalContent color="green.700">
         <ModalHeader>Add a new curated project</ModalHeader>
@@ -94,7 +97,12 @@ const addProjectFormModal = ({ isOpen, onOpen, onClose }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button variant="link" fontWeight="300" mr={3} onClick={onClose}>
+          <Button
+            variant="link"
+            fontWeight="300"
+            mr={3}
+            onClick={onAddProjectModalClose}
+          >
             Cancel
           </Button>
           <Button
