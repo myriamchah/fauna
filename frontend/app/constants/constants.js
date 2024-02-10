@@ -115,6 +115,25 @@ export const abi = [
     inputs: [
       {
         indexed: false,
+        internalType: "uint256",
+        name: "projectId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "comment",
+        type: "string",
+      },
+    ],
+    name: "ProperFundsUsageCertified",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "address",
         name: "donator",
         type: "address",
@@ -153,6 +172,24 @@ export const abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_id",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "_comment",
+        type: "string",
+      },
+    ],
+    name: "certifyFundsUsage",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "donate",
     outputs: [],
@@ -168,7 +205,7 @@ export const abi = [
   },
   {
     inputs: [],
-    name: "getBalanceOfFunds",
+    name: "getContractBalance",
     outputs: [
       {
         internalType: "uint256",
@@ -247,6 +284,16 @@ export const abi = [
             name: "voteCount",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "fundsReceived",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "usageCertified",
+            type: "bool",
+          },
         ],
         internalType: "struct Fauna.Project",
         name: "project",
@@ -281,6 +328,16 @@ export const abi = [
             internalType: "uint256",
             name: "voteCount",
             type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "fundsReceived",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "usageCertified",
+            type: "bool",
           },
         ],
         internalType: "struct Fauna.Project[]",

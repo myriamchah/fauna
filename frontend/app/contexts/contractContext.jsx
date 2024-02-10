@@ -71,7 +71,7 @@ export const ContractContextProvider = ({ children }) => {
       const balance = await readContract({
         address: contractAddress,
         abi: abi,
-        functionName: "getBalanceOfFunds",
+        functionName: "getContractBalance",
       });
       setFaunaBalance(formatEther(balance));
     } catch (e) {

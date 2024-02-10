@@ -15,6 +15,8 @@ contract Fauna is Ownable {
     string desc;
     address projAddress;
     uint voteCount;
+    uint fundsReceived;
+    bool usageCertified; 
   }
 
   enum  Phase {
@@ -34,6 +36,7 @@ contract Fauna is Ownable {
   event ProjectCurated(uint projectId);
   event Voted (address donator, uint votedProjectId);
   event FundsGranted(uint amount, uint projectId);
+  event ProperFundsUsageCertified(uint projectId, string comment);
 
   constructor() Ownable(msg.sender) {    }
 
@@ -56,23 +59,18 @@ contract Fauna is Ownable {
     return projects;
   }
 
+  function getContractBalance() external view returns(uint) {
+    return address(this).balance;
+  }
+
 
 //  *********************************** FUNDS ************************************  
-
 
   function donate() external payable {
     require(msg.value > 0, "Not enough funds deposited");
     donators[msg.sender].totalDonated += msg.value;
     emit DonationReceived(msg.sender, msg.value); 
   }
-
-  // function sendFunds(uint _amount, uint _projectId) external onlyOwner {
-  //   require(address(this).balance >= _amount, "Not enough funds");
-  //   require(_projectId < projects.length, "Unknown project");
-  //   (bool received, ) = projects[_projectId].projAddress.call{value: _amount}("");
-  //   require(received, "Payment failed");
-  //   emit FundsGranted(_amount, _recipient)
-  // }
 
   function sendFunds() external onlyOwner {
     require(phase >= Phase.VotesEnded, "Votes not ended");
@@ -84,6 +82,7 @@ contract Fauna is Ownable {
         uint amount = (balance * projects[i].voteCount) / totalVotes;
         (bool received, ) = projects[i].projAddress.call{value: amount}("");
         require(received, "Payment failed");
+        projects[i].fundsReceived = amount;
         emit FundsGranted(amount, i);
       }
     }
@@ -91,10 +90,11 @@ contract Fauna is Ownable {
     emit NewPhase(phase);  
   }
 
-  function getBalanceOfFunds() external view returns(uint) {
-    return address(this).balance;
+  function certifyFundsUsage(uint _id, string calldata _comment) external onlyOwner {
+    require(projects[_id].fundsReceived > 0, "No funds received");
+    projects[_id].usageCertified = true;
+    emit ProperFundsUsageCertified(_id, _comment);
   }
-
 
 // *********************************** PROJECTS ***********************************  
 
@@ -105,7 +105,7 @@ contract Fauna is Ownable {
     require(bytes(_desc).length > 0, "No description");
     require(_projAddress != address(0), "No address");
 
-    projects.push(Project(_name, _desc, _projAddress, 0));
+    projects.push(Project(_name, _desc, _projAddress, 0, 0, false));
     emit ProjectCurated(projects.length -1);
   }
 

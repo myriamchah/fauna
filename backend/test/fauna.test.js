@@ -67,6 +67,18 @@ describe("Fauna Tests", function () {
     });
   });
 
+  describe("getContractBalance", function () {
+    it("should allow any address to see balance of the smart contract", async function () {
+      let { fauna } = await loadFixture(deployFauna);
+      await fauna.donate({ value: ethers.parseEther("1") });
+
+      const balance1 = await fauna.getContractBalance();
+      const balance2 = await ethers.provider.getBalance(fauna.target);
+
+      assert.equal(balance1, balance2);
+    });
+  });
+
   // FUNDS
 
   describe("donate", function () {
@@ -125,6 +137,35 @@ describe("Fauna Tests", function () {
       await expect(fauna.sendFunds()).to.be.revertedWith("Empty balance");
     });
 
+    it("should update fundsReceived value", async function () {
+      let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
+      await fauna.startVotes();
+      await fauna.connect(addr2).submitVote(0);
+      await fauna.endVotes();
+      await fauna.sendFunds();
+
+      const project = await fauna.getProject(0);
+
+      assert.equal(project.fundsReceived, ethers.parseEther("1"));
+    });
+
+    it("should not update fundsReceived value if projects has no votes", async function () {
+      let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.addCuratedProject("name2", "desc2", addr2.address);
+      await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
+      await fauna.startVotes();
+      await fauna.connect(addr2).submitVote(0);
+      await fauna.endVotes();
+      await fauna.sendFunds();
+
+      const project = await fauna.getProject(1);
+
+      assert.equal(project.fundsReceived, 0);
+    });
+
     it("should emit an event for payment", async function () {
       let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
       await fauna.addCuratedProject("name1", "desc1", addr1.address);
@@ -150,15 +191,42 @@ describe("Fauna Tests", function () {
     });
   });
 
-  describe("getBalanceOfFunds", function () {
-    it("should allow any address to see balance of the smart contract", async function () {
-      let { fauna } = await loadFixture(deployFauna);
-      await fauna.donate({ value: ethers.parseEther("1") });
+  describe("certifyFundsUsage", function () {
+    it("should revert if sender is not the Owner", async function () {
+      let { fauna, addr1 } = await loadFixture(deployFauna);
 
-      const balance1 = await fauna.getBalanceOfFunds();
-      const balance2 = await ethers.provider.getBalance(fauna.target);
+      await expect(fauna.connect(addr1).certifyFundsUsage(1, "comment1"))
+        .to.be.revertedWithCustomError(fauna, "OwnableUnauthorizedAccount")
+        .withArgs(addr1.address);
+    });
 
-      assert.equal(balance1, balance2);
+    it("should set usageCertified to true", async function () {
+      let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
+      await fauna.startVotes();
+      await fauna.connect(addr2).submitVote(0);
+      await fauna.endVotes();
+      await fauna.sendFunds();
+      await fauna.certifyFundsUsage(0, "ok");
+
+      const project = await fauna.getProject(0);
+
+      assert.equal(project.usageCertified, true);
+    });
+
+    it("should emit an event", async function () {
+      let { fauna, addr1, addr2 } = await loadFixture(deployFauna);
+      await fauna.addCuratedProject("name1", "desc1", addr1.address);
+      await fauna.connect(addr2).donate({ value: ethers.parseEther("1") });
+      await fauna.startVotes();
+      await fauna.connect(addr2).submitVote(0);
+      await fauna.endVotes();
+      await fauna.sendFunds();
+
+      await expect(fauna.certifyFundsUsage(0, "ok"))
+        .to.emit(fauna, "ProperFundsUsageCertified")
+        .withArgs(0, "ok");
     });
   });
 
