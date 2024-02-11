@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, Flex, Heading, Card, CardBody } from "@chakra-ui/react";
+import { Container, Flex, Text, Card, CardBody } from "@chakra-ui/react";
 import { useUserContext } from "@/app/contexts/userContext";
 
 import DonateForm from "./forms/DonateForm";
@@ -11,36 +11,46 @@ import FundsUsageCertified from "./copies/FundsUsageCertified";
 import KPIs from "./contractState/KPIs";
 import Phase from "./contractState/Phase";
 import ProjectsList from "./contractState/ProjectsList";
+import DonationsList from "./contractState/DonationsList";
 
 const Main = () => {
   const { isOwner, isDonator } = useUserContext();
   return (
-    <Container mt="124px" maxW="84vw" height="calc(100vh - 180px)">
+    <Container
+      mt="124px"
+      maxW="84vw"
+      height="calc(100vh - 180px)"
+      overflowY="auto"
+    >
       <Flex justifyContent="space-between" alignItems="center" mb="1rem">
-        <Heading size="2xl">
+        <Text fontSize="48px" fontWeight="800">
           Hello, dear {isOwner && "Admin"} {isDonator && "Donator"}
-        </Heading>
+        </Text>
         <Flex>
           <KPIs />
         </Flex>
       </Flex>
-
-      <Card
-        bg="rgba(246, 222, 117,0.3)"
-        height="inherit"
-        overflowY="auto"
-        width="100%"
-      >
-        <CardBody color="white">
-          <Phase />
-          <ProjectsList />
-          <DonateForm />
-          <VoteForm />
-          <VotesEnded />
-          <FundsGranted />
-          <FundsUsageCertified />
-        </CardBody>
-      </Card>
+      <Flex gap="4">
+        <Card bg="rgba(246, 222, 117,0.3)" minH="60vh" flex="1">
+          <CardBody color="white">
+            <Text fontSize="36px" fontWeight="700" mb="1rem">
+              What's up?
+            </Text>
+            <Phase />
+            <ProjectsList />
+            <DonationsList />
+          </CardBody>
+        </Card>
+        <Card bg="rgba(246, 222, 117,0.3)" minH="inherit" flex="3">
+          <CardBody color="white">
+            <DonateForm />
+            <VoteForm />
+            <VotesEnded />
+            <FundsGranted />
+            <FundsUsageCertified />
+          </CardBody>
+        </Card>
+      </Flex>
     </Container>
   );
 };

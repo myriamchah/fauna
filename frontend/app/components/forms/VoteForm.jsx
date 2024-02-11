@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Flex, Text, Heading, Center } from "@chakra-ui/react";
+import { Button, Flex, Text, Center } from "@chakra-ui/react";
 import { useContractContext } from "../../contexts/contractContext";
 import { useUserContext } from "@/app/contexts/userContext";
 
@@ -24,7 +24,9 @@ const VoteForm = () => {
     <>
       {phase === 1 && isDonator && (
         <>
-          <Heading my="1rem">Vote</Heading>
+          <Text fontSize="36px" fontWeight="700" my="1rem">
+            Vote
+          </Text>
           <Text>
             We selected a few projects, based on rigorous criteria regarding
             their impact on wildlife, environment but also local populations.

@@ -1,6 +1,6 @@
 "use client";
 
-import { Text, Heading, Flex } from "@chakra-ui/react";
+import { Text, Flex } from "@chakra-ui/react";
 import { useContractContext } from "@/app/contexts/contractContext";
 import { formatEther } from "viem";
 
@@ -11,7 +11,9 @@ const FundsGranted = () => {
     <>
       {phase === 3 && (
         <>
-          <Heading mb="1rem">Funds have been sent!</Heading>
+          <Text fontSize="36px" fontWeight="700" mb="1rem">
+            Funds have been sent!
+          </Text>
           <Text mb="0.5rem">
             Here is the split, based on the donators votes:
           </Text>

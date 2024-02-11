@@ -3,9 +3,10 @@
 import { Text, useDisclosure, Collapse } from "@chakra-ui/react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
 import { useContractContext } from "@/app/contexts/contractContext";
+import { formatEther } from "viem";
 
-const ProjectsList = () => {
-  const { projects } = useContractContext();
+const DonationsList = () => {
+  const { donationEvents } = useContractContext();
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -16,23 +17,19 @@ const ProjectsList = () => {
         _hover={{ color: "green.200", cursor: "pointer" }}
         onClick={onToggle}
       >
-        See Projects list
+        See Donations
         <TriangleDownIcon boxSize="0.5em" ml="0.25rem" />
       </Text>
       <Collapse in={isOpen} animateOpacity>
-        {projects.length
-          ? projects.map((project) => (
-              <>
-                <Text fontSize="18px" fontWeight="600">
-                  {project.name}
-                </Text>
-                <Text>{project.desc}</Text>
-              </>
-            ))
-          : "No projects yet"}
+        {donationEvents.length > 0 &&
+          donationEvents.reverse().map((event, i) => (
+            <Text fontSize="12" key={i}>
+              {formatEther(event.amount)} ETH received from {event.address}
+            </Text>
+          ))}
       </Collapse>
     </>
   );
 };
 
-export default ProjectsList;
+export default DonationsList;

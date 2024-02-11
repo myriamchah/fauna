@@ -1,6 +1,6 @@
 "use client";
 
-import { Text, Heading, Flex } from "@chakra-ui/react";
+import { Text, Flex } from "@chakra-ui/react";
 import { useContractContext } from "@/app/contexts/contractContext";
 
 const FundsUsageCertified = () => {
@@ -10,7 +10,9 @@ const FundsUsageCertified = () => {
     <>
       {phase === 3 && (
         <>
-          <Heading mb="1rem">Certified good usage</Heading>
+          <Text fontSize="36px" fontWeight="700" mb="1rem">
+            Certified good usage
+          </Text>
           <Text mb="0.5rem">
             We are working on gathering information before certifying anything.
             Also, some funds are planned to be used more or less sooner, so it
