@@ -10,7 +10,7 @@ const KPICard = ({ title, value }) => {
           {title}
         </Text>
         <Text fontSize="24px" fontWeight="700" align="end">
-          {title === "Funds raised" && (
+          {title.includes("unds") && (
             <span style={{ fontSize: "12px", marginRight: "4px" }}>ETH</span>
           )}
           {value}

@@ -1,7 +1,7 @@
 "use client";
 
 import { Text, useDisclosure, Collapse } from "@chakra-ui/react";
-import { TriangleDownIcon } from "@chakra-ui/icons";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { useContractContext } from "@/app/contexts/contractContext";
 
 const ProjectsList = () => {
@@ -17,8 +17,12 @@ const ProjectsList = () => {
         _hover={{ color: "orange.300", cursor: "pointer" }}
         onClick={onToggle}
       >
-        See Projects list
-        <TriangleDownIcon boxSize="0.5em" ml="0.25rem" />
+        Projects list
+        {isOpen ? (
+          <TriangleUpIcon boxSize="0.5em" ml="0.25rem" />
+        ) : (
+          <TriangleDownIcon boxSize="0.5em" ml="0.25rem" />
+        )}
       </Text>
       <Collapse in={isOpen} animateOpacity>
         {projects.length

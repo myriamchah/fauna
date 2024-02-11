@@ -17,11 +17,19 @@ const KPIs = () => {
     }
   }
 
+  const electedProjects = projects.filter((project) => project.voteCount > 0);
+
   return (
     <Flex gap="4">
-      <KPICard title="Curated projects" value={projects.length} />
+      <KPICard
+        title={`${phase === 3 ? "Granted" : "Curated"} projects`}
+        value={phase === 3 ? electedProjects.length : projects.length}
+      />
       <KPICard title="Donators" value={donators.length} />
-      <KPICard title="Funds raised" value={faunaBalance} />
+      <KPICard
+        title={`${phase === 3 ? "Remaining funds" : "Funds raised"}`}
+        value={faunaBalance}
+      />
     </Flex>
   );
 };
