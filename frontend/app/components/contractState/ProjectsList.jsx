@@ -13,7 +13,8 @@ const ProjectsList = () => {
       <Text
         fontSize="24px"
         fontWeight="700"
-        _hover={{ color: "green.200", cursor: "pointer" }}
+        color="orange.200"
+        _hover={{ color: "orange.300", cursor: "pointer" }}
         onClick={onToggle}
       >
         See Projects list
@@ -23,8 +24,8 @@ const ProjectsList = () => {
         {projects.length
           ? projects.map((project) => (
               <>
-                <Text fontSize="18px" fontWeight="600">
-                  {project.name}
+                <Text fontSize="18px" fontWeight="600" color="yellow.200">
+                  ✿ {project.name}
                 </Text>
                 <Text>{project.desc}</Text>
               </>

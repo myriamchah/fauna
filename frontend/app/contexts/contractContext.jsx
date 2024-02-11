@@ -22,7 +22,7 @@ export const ContractContextProvider = ({ children }) => {
   const [donationEvents, setDonationEvents] = useState([]);
   const [fundsGrantedEvents, setFundsGrantedEvents] = useState([]);
   const [certifEvents, setCertifEvents] = useState([]);
-  const { setHasVoted, setVotedProjectId } = useUserContext();
+  const { setHasVoted, setVotedProjectId, checkDonator } = useUserContext();
   const { address, isConnected } = useAccount();
   const toast = useToast();
   const client = getPublicClient();
@@ -116,6 +116,7 @@ export const ContractContextProvider = ({ children }) => {
       await waitForTransaction({ hash });
       await getFaunaBalance();
       await getDonationEvents();
+      await checkDonator();
       toast.showSuccess(
         "Thank you for your donation! We're looking forward to your vote to help a project fighting for wildlife protection :)"
       );
@@ -137,6 +138,7 @@ export const ContractContextProvider = ({ children }) => {
       await getFundsGrantedEvents();
       toast.showSuccess("All funds have been sent to grantees!");
       await checkPhase();
+      await getProjects();
     } catch (e) {
       toast.showError(e.message);
     }

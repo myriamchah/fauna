@@ -33,12 +33,20 @@ const DonateForm = () => {
     <>
       {phase < 2 && (
         <>
-          <Text fontSize="36px" fontWeight="700" mb="1rem">
+          <Text
+            fontSize="36px"
+            fontWeight="700"
+            mb="1rem"
+            align="center"
+            color="orange.200"
+          >
             Donate
           </Text>
-          <Text>
-            Wildlife needs you!! Donate now and we will make sure your donation
-            is well used and will help animals live a better life.
+          <Text align="center" mb="1rem">
+            Wildlife needs you!! <br /> Donate now and we will make sure your
+            donation is well used. We select projects carefully and work in
+            close collaboration with them in order to make sure the grants are
+            used efficiently for wildlife protection purpose.
           </Text>
           <Center>
             <InputGroup width="30%">

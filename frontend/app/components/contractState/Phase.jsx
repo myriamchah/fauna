@@ -9,7 +9,7 @@ const Phase = () => {
   const phaseDescription = () => {
     switch (phase) {
       case 0:
-        return "Projects are being curated, and you can donate.";
+        return "Projects are being curated. In the meantime, donations are open.";
       case 1:
         return "Votes are open, and you can still donate.";
       case 2:

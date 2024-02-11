@@ -56,6 +56,7 @@ export const UserContextProvider = ({ children }) => {
         votedProjectId,
         setHasVoted,
         setVotedProjectId,
+        checkDonator,
       }}
     >
       {children}

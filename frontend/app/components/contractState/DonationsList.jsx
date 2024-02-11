@@ -14,7 +14,8 @@ const DonationsList = () => {
       <Text
         fontSize="24px"
         fontWeight="700"
-        _hover={{ color: "green.200", cursor: "pointer" }}
+        color="orange.200"
+        _hover={{ color: "orange.300", cursor: "pointer" }}
         onClick={onToggle}
       >
         See Donations

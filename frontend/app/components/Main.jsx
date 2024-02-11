@@ -31,9 +31,9 @@ const Main = () => {
         </Flex>
       </Flex>
       <Flex gap="4">
-        <Card bg="rgba(246, 222, 117,0.3)" minH="60vh" flex="1">
+        <Card bg="rgba(100, 74, 13,0.4)" minH="60vh" flex="1">
           <CardBody color="white">
-            <Text fontSize="36px" fontWeight="700" mb="1rem">
+            <Text fontSize="36px" fontWeight="700" mb="1rem" color="orange.200">
               What's up?
             </Text>
             <Phase />
@@ -41,7 +41,7 @@ const Main = () => {
             <DonationsList />
           </CardBody>
         </Card>
-        <Card bg="rgba(246, 222, 117,0.3)" minH="inherit" flex="3">
+        <Card bg="rgba(100, 74, 13,0.4)" minH="inherit" flex="3">
           <CardBody color="white">
             <DonateForm />
             <VoteForm />

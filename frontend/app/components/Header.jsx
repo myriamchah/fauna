@@ -60,7 +60,6 @@ const Header = () => {
         pos="fixed"
         top="0"
         zIndex={2}
-        bgColor={isConnected ? "#172B20" : "transparent"}
       >
         {isConnected && (
           <Text fontSize={40} className={anton.className}>

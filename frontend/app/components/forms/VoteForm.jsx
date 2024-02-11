@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Flex, Text, Center } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useContractContext } from "../../contexts/contractContext";
 import { useUserContext } from "@/app/contexts/userContext";
 
@@ -24,22 +24,28 @@ const VoteForm = () => {
     <>
       {phase === 1 && isDonator && (
         <>
-          <Text fontSize="36px" fontWeight="700" my="1rem">
+          <Text
+            fontSize="36px"
+            fontWeight="700"
+            my="1rem"
+            color="orange.200"
+            align="center"
+          >
             Vote
           </Text>
-          <Text>
+          <Text align="center" mb="1rem">
             We selected a few projects, based on rigorous criteria regarding
             their impact on wildlife, environment but also local populations.
             You may choose one project to which you would like us to send funds.
             Funds will be shared between the projects getting at least 1 votes.
           </Text>
           {hasVoted ? (
-            <Center mt="2rem">
+            <Text align="center" fontWeight="600">
               Thank you, you already voted! (For: &nbsp;
               {votedProjectId >= 0 && projects[votedProjectId].name})
-            </Center>
+            </Text>
           ) : (
-            <Flex>
+            <Flex justifyContent="center">
               {projects.length > 0 &&
                 projects.map((project, i) => (
                   <Flex alignItems="center" key={i}>

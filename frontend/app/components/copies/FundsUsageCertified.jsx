@@ -10,23 +10,29 @@ const FundsUsageCertified = () => {
     <>
       {phase === 3 && (
         <>
-          <Text fontSize="36px" fontWeight="700" mb="1rem">
-            Certified good usage
+          <Text
+            fontSize="36px"
+            fontWeight="700"
+            my="1rem"
+            align="center"
+            color="orange.200"
+          >
+            Follow-up with grantees
           </Text>
-          <Text mb="0.5rem">
-            We are working on gathering information before certifying anything.
-            Also, some funds are planned to be used more or less sooner, so it
-            can take time.
+          <Text mb="0.5rem" align="center">
+            We aim at certifying proper use for the funds that were sent. We are
+            in contact with the grantees. Please keep in mind that grantees may
+            plan to use the funds more or less sooner, which can add delay.
           </Text>
-          <Flex direction="column" mt="0.5rem">
+          <Flex direction="column" alignItems="center" mt="0.5rem">
             {certifEvents.length > 0 &&
               certifEvents.map((event, i) => (
-                <Flex gap="2">
-                  <Text fontSize="18px" fontWeight="600" key={i}>
-                    {projects[event.id].name}
-                  </Text>
-                  <Text> {event.comment}</Text>
-                </Flex>
+                <Text fontSize="18px" fontWeight="600" key={i}>
+                  ✓ {projects[event.id].name} : &nbsp;
+                  <span style={{ fontSize: "16px", fontWeight: "500" }}>
+                    {event.comment}
+                  </span>
+                </Text>
               ))}
           </Flex>
         </>
