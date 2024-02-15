@@ -76,13 +76,18 @@ contract Fauna is Ownable {
     require(phase >= Phase.VotesEnded, "Votes not ended");
     require(address(this).balance > 0, "Empty balance");
     uint balance = address(this).balance;
+    bool guard;
 
     for(uint i;i < projects.length;i++){
       if (projects[i].voteCount > 0) {
         uint amount = (balance * projects[i].voteCount) / totalVotes;
+        require(balance > amount);
+        require(guard == false);
+        guard = true;
+        projects[i].fundsReceived = amount;
         (bool received, ) = projects[i].projAddress.call{value: amount}("");
         require(received, "Payment failed");
-        projects[i].fundsReceived = amount;
+        guard = false;
         emit FundsGranted(amount, i);
       }
     }
