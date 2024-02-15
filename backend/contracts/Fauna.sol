@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title A DAO bringing animal lovers efforts together to enhance wildlife protection
 /// @author Myriam Chah
 
-contract Fauna is Ownable {
+contract Fauna is Ownable, ReentrancyGuard {
 
 // *********************************** STRUCTS ***********************************  
     
@@ -137,22 +138,17 @@ contract Fauna is Ownable {
   * Will trigger an error if Voting phase is not ended or if contract's balance is 0.
   * @dev A manual guard prevents from reentrancy attack.
   */
-  function sendFunds() external onlyOwner {
+  function sendFunds() external onlyOwner nonReentrant {
     require(phase >= Phase.VotesEnded, "Votes not ended");
     require(address(this).balance > 0, "Empty balance");
     uint balance = address(this).balance;
-    bool guard;
 
     for(uint i;i < projects.length;i++){
       if (projects[i].voteCount > 0) {
         uint amount = (balance * projects[i].voteCount) / totalVotes;
-        require(balance >= amount);
-        require(guard == false);
-        guard = true;
         projects[i].fundsReceived = amount;
         (bool received, ) = projects[i].projAddress.call{value: amount}("");
         require(received, "Payment failed");
-        guard = false;
         emit FundsGranted(amount, i);
       }
     }
