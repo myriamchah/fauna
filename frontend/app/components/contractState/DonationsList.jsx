@@ -9,6 +9,10 @@ const DonationsList = () => {
   const { donationEvents } = useContractContext();
   const { isOpen, onToggle } = useDisclosure();
 
+  const truncatedAddress = (address) => {
+    return address.slice(0, 6) + "..." + address.slice(38);
+  };
+
   return (
     <>
       <Text
@@ -29,7 +33,8 @@ const DonationsList = () => {
         {donationEvents.length > 0 &&
           donationEvents.reverse().map((event, i) => (
             <Text fontSize="12" key={i} noOfLines={2}>
-              {formatEther(event.amount)} ETH received from {event.address}
+              {formatEther(event.amount)} ETH received from{" "}
+              {truncatedAddress(event.address)}
             </Text>
           ))}
       </Collapse>

@@ -24,8 +24,8 @@ const Main = () => {
     >
       <Flex justifyContent="space-between" alignItems="center" mb="1rem">
         <Text fontSize="48px" fontWeight="800">
-          Hello, dear {isOwner && "Admin"}{" "}
-          {isDonator ? "Donator" : !isOwner && "Visitor"}
+          Hello, dear {isOwner && "admin"}{" "}
+          {isDonator ? "donator" : !isOwner && "visitor"}
         </Text>
         <Flex>
           <KPIs />
