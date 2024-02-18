@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useContractContext } from "../../contexts/contractContext";
 
-const addProjectFormModal = ({
+const AddProjectFormModal = ({
   isAddProjectModalOpen,
   onAddProjectModalClose,
 }) => {
@@ -119,4 +119,4 @@ const addProjectFormModal = ({
   );
 };
 
-export default addProjectFormModal;
+export default AddProjectFormModal;

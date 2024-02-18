@@ -53,8 +53,9 @@ const CertifyModal = ({ isCertifyModalOpen, onCertifyModalClose }) => {
             <FormLabel>Project</FormLabel>
             <Select placeholder="Select project">
               {eligibleProjects.length > 0 &&
-                eligibleProjects.map((project) => (
+                eligibleProjects.map((project, i) => (
                   <option
+                    key={i}
                     value={project.id}
                     onClick={() => setProjectId(project.id)}
                   >
