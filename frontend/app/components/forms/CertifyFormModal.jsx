@@ -27,8 +27,18 @@ const CertifyModal = ({ isCertifyModalOpen, onCertifyModalClose }) => {
   const { certifyFundsUsage, projects } = useContractContext();
 
   const eligibleProjects = projects.filter(
-    (project) => project.fundsReceived > 0 && !project.usageCertified
+    (project) => project.fundsReceived > 0
   );
+
+  const getProjectId = (p) => {
+    return projects.indexOf(
+      projects.find((project) => project.name === p.name)
+    );
+  };
+
+  const onChange = (e) => {
+    setProjectId(e.target.value);
+  };
 
   const onSubmit = async () => {
     setIsLoading(true);
@@ -51,14 +61,10 @@ const CertifyModal = ({ isCertifyModalOpen, onCertifyModalClose }) => {
         <ModalBody>
           <FormControl>
             <FormLabel>Project</FormLabel>
-            <Select placeholder="Select project">
+            <Select placeholder="Select project" onChange={onChange}>
               {eligibleProjects.length > 0 &&
                 eligibleProjects.map((project, i) => (
-                  <option
-                    key={i}
-                    value={project.id}
-                    onClick={() => setProjectId(project.id)}
-                  >
+                  <option key={i} value={getProjectId(project)}>
                     {project.name}
                   </option>
                 ))}
