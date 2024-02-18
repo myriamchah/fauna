@@ -2,6 +2,11 @@
 
 This DAO project is made in the context of Alyra School and the obtention of a blockchain developer certification.
 
+## Useful links:
+
+[Deployment on Vercel](https://faunadao.vercel.app/)
+[Video of DApp]()
+
 ## Getting started
 
 To run the project locally, here are the steps:
