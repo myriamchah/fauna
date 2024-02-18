@@ -4,8 +4,10 @@ This DAO project is made in the context of Alyra School and the obtention of a b
 
 ## Useful links:
 
-[Deployment on Vercel](https://faunadao.vercel.app/)
-[Video of DApp]()
+[Deployment on Vercel](https://faunadao.vercel.app/)  
+<sub> NB: I unintentionnally created 2 accounts on Vercel, and can't manage to access the first one, on which I had deploy difficulties and that is currently displaying failed deployment on my GitHub. Still, I managed to deploy with vercel CLI - which created my 2nd account... I didn't manage yet to fix the double accounts problem, but as you can see, the app is up and running :) </sub>
+
+[Demo video](https://www.loom.com/share/4bcb50aeee0b4705af85245e03062b60)
 
 ## Getting started
 
