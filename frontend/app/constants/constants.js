@@ -1,4 +1,5 @@
-export const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+export const contractAddress = "0x39c133Ee8f5AbC16e8b5fDC13Ace902d30627867";
+export const deployBlockNumber = 5311608n;
 export const abi = [
   {
     inputs: [],

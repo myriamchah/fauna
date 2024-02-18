@@ -16,15 +16,19 @@ import {
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { sepolia, hardhat } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 
 const { chains, publicClient } = configureChains(
   [sepolia, hardhat],
-  [publicProvider()]
+  [
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID }),
+    publicProvider(),
+  ]
 );
 
 const { connectors } = getDefaultWallets({
   appName: "FAUNA DAO",
-  projectId: "83210f7c087525233ee5ffd57282b181",
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
   chains,
 });
 

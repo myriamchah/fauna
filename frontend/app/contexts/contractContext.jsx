@@ -1,5 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { contractAddress, abi } from "../constants/constants";
+import {
+  contractAddress,
+  abi,
+  deployBlockNumber,
+} from "../constants/constants";
 import useToast from "../hooks/useToast";
 import { useAccount } from "wagmi";
 import {
@@ -233,7 +237,7 @@ export const ContractContextProvider = ({ children }) => {
       event: parseAbiItem(
         "event DonationReceived(address account, uint amount)"
       ),
-      fromBlock: 0n,
+      fromBlock: deployBlockNumber,
       toBlock: "latest",
     });
     setDonationEvents(
@@ -247,7 +251,7 @@ export const ContractContextProvider = ({ children }) => {
   const getFundsGrantedEvents = async () => {
     const fundsGrantedLogs = await client.getLogs({
       event: parseAbiItem("event FundsGranted(uint amount, uint projectId)"),
-      fromBlock: 0n,
+      fromBlock: deployBlockNumber,
       toBlock: "latest",
     });
     setFundsGrantedEvents(
@@ -263,7 +267,7 @@ export const ContractContextProvider = ({ children }) => {
       event: parseAbiItem(
         "event ProperFundsUsageCertified(uint id, string comment)"
       ),
-      fromBlock: 0n,
+      fromBlock: deployBlockNumber,
       toBlock: "latest",
     });
     setCertifEvents(
