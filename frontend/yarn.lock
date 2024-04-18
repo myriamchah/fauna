@@ -881,7 +881,7 @@
   integrity sha512-lIGvXMsgpsQWci/XOMQIJ2nIZ8JUy/L+bvC0wkRaYarr0YylwpXrJ2gRM3hCXPS477pkyO7N/kSiAoRgEXUdJQ==
   dependencies:
     "@metamask/safe-event-emitter" "2.0.0"
-    "@solana/web3.js" "^1.70.1"
+    "@solana/web3.js" "^1.89.2"
     bind-decorator "^1.0.11"
     bn.js "^5.1.1"
     buffer "^6.0.3"
@@ -1461,8 +1461,8 @@
   dependencies:
     buffer "~6.0.3"
 
-"@solana/web3.js@^1.70.1":
-  version "1.89.1"
+"@solana/web3.js@^1.89.2":
+  version "1.89.2"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.89.1.tgz#52df6820f2d088c4558aa359af40580a03d10ec9"
   integrity sha512-t9TTLtPQxtQB3SAf/5E8xPXfVDsC6WGOsgKY02l2cbe0HLymT7ynE8Hu48Lk5qynHCquj6nhISfEHcjMkYpu/A==
   dependencies:
